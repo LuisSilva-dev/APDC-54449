@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="style.css">
+<script>
+xmlhttp = new XMLHttpRequest();
+	function sendXML(method, url) {
+		if(xmlhttp) {
+			xmlhttp.open(method, url, true);
+			xmlhttp.setRequestHeader('Content-type', 'application/json');
+			xmlhttp.setRequestHeader('Accept', 'application/json');
+			login = {
+				username: document.getElementById('usernameLogin').value,
+				password: document.getElementById('passwordLogin').value
+			};
+			
+			loginText = JSON.stringify(login);
+			xmlhttp.onreadystatechange = function receiveResponse() {
+			if(this.readyState == 4 && this.status != 200) {
+				alert("Invalid parameters");
+			}
+			}
+			xmlhttp.send(loginText);
+			xmlhttp.onload = () => {
+				var response = JSON.parse(xmlhttp.response);
+				var date = new Date(Date.now() + response.expirationData - response.creationData).getTime();
+				window.localStorage.setItem("tokenID", response.tokenID);
+				alert("You logged in!");
+				window.location.href = "options.html";
+			}
+		}
+	}
+	function getData() {
+		sendXML('POST', 'https://deft-scope-271519.appspot.com/rest/login/v1');
+	}
+</script>
+</head>
+<body>
+	<div class="login">
+		<label for="usernameLogin"><b>Username</b></label>
+		<input type="text" id="usernameLogin" placeholder="Enter Username" name="usernameLogin" required>
+		<label for="passwordLogin"><b>Password</b></label>
+		<input type="password" id="passwordLogin" placeholder="Enter Password" name="passwordLogin" required>
+		<input type="button" Value="login" onClick=getData()>
+	</div>
+</body>
+</html>

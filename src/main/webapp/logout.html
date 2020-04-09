@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="style.css">
+<script>
+	xmlhttp = new XMLHttpRequest();
+	function sendXML(method, url) {
+		if(xmlhttp) {
+			xmlhttp.open(method, url, true);
+			xmlhttp.setRequestHeader('Content-type', 'application/json');
+			logout = {
+				tokenID: localStorage.getItem("tokenID")
+			};
+			
+			logoutText = JSON.stringify(logout);
+			xmlhttp.onreadystatechange = function receiveResponse() {
+			if(this.readyState == 4 && this.status != 200) {
+				alert("Invalid parameters");
+				window.location.href = "options.html";
+			}
+			}
+			xmlhttp.send(logoutText);
+			xmlhttp.onload = () => {
+				localStorage.clear();
+				alert("Your account was logged out!");
+				window.location.href = "login.html";
+			}
+		}
+	}
+	
+	function getData() {
+		sendXML('DELETE', 'https://deft-scope-271519.appspot.com/rest/logout/v1');
+	}
+	
+</script>
+</head>
+<body onload=getData()>
+</body>
+</html>

@@ -1,0 +1,20 @@
+form {
+  border: 3px solid #f1f1f1;
+}
+
+input[type=text], input[type=password] {
+  width: 100%;
+  margin: 8px 0;
+  display: inline-block;
+  box-sizing: border-box;
+}
+
+.register {
+  max-width: 200px;
+  min-width: 32px;
+}
+
+.login {
+  max-width: 200px;
+  min-width: 32px;
+}

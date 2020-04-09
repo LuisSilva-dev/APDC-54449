@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="style.css">
+<script>
+xmlhttp = new XMLHttpRequest();
+	function sendXML(method, url) {
+		if(xmlhttp) {
+			xmlhttp.open(method, url, true);
+			xmlhttp.setRequestHeader('Content-type', 'application/json');
+			xmlhttp.setRequestHeader('Accept', 'application/json');
+			changeRole = {
+				username: document.getElementById('username').value,
+				tokenID: localStorage.getItem('tokenID')
+			}
+			changeRoleText = JSON.stringify(changeRole);
+			xmlhttp.onreadystatechange = function receiveResponse() {
+				if(this.readyState == 4 && this.status != 200) {
+					alert("Invalid parameters");
+					window.location.href = "options.html";
+				}
+			}
+			xmlhttp.send(changeRoleText);
+			xmlhttp.onload = () => {
+				var response = JSON.parse(xmlhttp.responseText);
+				alert("The role was updated!");
+				window.location.href = "options.html";
+			}
+		}
+	}
+	
+	function getData() {
+		sendXML('PUT', 'https://deft-scope-271519.appspot.com/rest/changeRole/v1');
+	}
+</script>
+</head>
+<body>
+	<div class="changeRole">
+		<label for="username"><b>Username</b></label>
+		<input type="text" id="username" placeholder="Enter Username" name="username" required>
+		<input type="button" value="submit" onClick=getData()>
+	</div>
+</body>
+</html>

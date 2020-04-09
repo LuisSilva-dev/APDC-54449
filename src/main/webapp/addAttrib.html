@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="style.css">
+<script>
+xmlhttp = new XMLHttpRequest();
+	function sendXML(method, url) {
+		if(xmlhttp) {
+			xmlhttp.open(method, url, true);
+			xmlhttp.setRequestHeader('Content-type', 'application/json');
+			xmlhttp.setRequestHeader('Accept', 'application/json');
+			xmlhttp.setRequestHeader('Access-Control-Allow-Origin', '*');
+			attributes = {
+				username: document.getElementById('username').value,
+				perfil: document.getElementById('profile').value,
+				telefoneFixo: document.getElementById('telephoneFix').value,
+				telefoneMovel: document.getElementById('telephoneMovel').value,
+				morada: document.getElementById('location').value,
+				estado: document.getElementById('status').value,
+				tokenID: localStorage.getItem('tokenID')
+			}
+			attributesText = JSON.stringify(attributes);
+			xmlhttp.onreadystatechange = function receiveResponse() {
+				if(this.readyState == 4 && this.status != 200) {
+					alert("Invalid user!");
+					window.location.href = "options.html";
+				}
+			}
+			xmlhttp.send(attributesText);
+			xmlhttp.onload = () => {
+				var response = JSON.parse(xmlhttp.responseText);
+				alert("The attributes were updated!");
+				window.location.href = "options.html";
+			}
+		}
+	}
+	
+	function getData() {
+		sendXML('PUT', 'https://deft-scope-271519.appspot.com/rest/addAttrib/v1');
+	}
+</script>
+</head>
+<body>
+	<div class="addAttrib">
+		<input type="text" id="username" placeholder="username to modify">
+		<select id="profile">
+			<option value="public">public</option>
+			<option value="private">private</option>
+		</select>
+		<input type="text" id="telephoneFix" placeholder="000 000 000">
+		<input type="text" id="telephoneMovel" placeholder="000 000 000">
+		<input type="text" id="location" placeholder="location XXXX-XXX">
+		<select id="status">
+			<option value="active">active</option>
+			<option value="inactive">inactive</option>
+		</select>
+		<input type="button" value="submit changes" onClick=getData()>
+	</div>
+	
+</body>
+</html>

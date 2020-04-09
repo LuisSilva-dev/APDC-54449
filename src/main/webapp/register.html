@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="style.css">
+<script>
+	xmlhttp = new XMLHttpRequest();
+	function sendXML(method, url) {
+		if(xmlhttp) {
+			xmlhttp.open(method, url, true);
+			xmlhttp.setRequestHeader('Content-type', 'application/json');
+			register = {
+				username: document.getElementById('usernameRes').value,
+				email: document.getElementById('emailRes').value,
+				password: document.getElementById('passwordRes').value,
+				confirmation: document.getElementById('confirmationRes').value,
+				perfil: document.getElementById('profile').value,
+				telefoneFixo: document.getElementById('telephoneFix').value,
+				telefoneMovel: document.getElementById('telephoneMouble').value,
+				morada: document.getElementById('location').value,
+				estado: document.getElementById('status').value
+			};
+			registerText = JSON.stringify(register);
+			xmlhttp.onreadystatechange = function receiveResponse() {
+				if(this.readyState == 4 && this.status != 200) {
+					alert("Invalid parameters");
+				}
+			}
+				xmlhttp.send(registerText);
+				xmlhttp.onload = () => {
+					alert("You registered");
+					window.location.href = "login.html";
+				};
+		}
+	}
+	function getData() {
+		sendXML('POST', 'https://deft-scope-271519.appspot.com/rest/register/v1');
+		
+	}
+</script>
+</head>
+<body>
+
+	<div class="register">
+	<input type="text" id="usernameRes" placeholder="Enter Username">
+		<input type="text" id="emailRes" placeholder="Enter Email">
+		<input type="password" id="passwordRes" placeholder="Enter Password">
+		<input type="password" id="confirmationRes" placeholder="Enter same Password">
+		<select id="profile">
+			<option value="public">public</option>
+			<option value="private">private</option>
+		</select>
+		<input type="text" id="telephoneFix" placeholder="000 000 000">
+		<input type="text" id="telephoneMouble" placeholder="000 000 000">
+		<input type="text" id="location" placeholder="location XXXX-XXX">
+		<select id="status">
+			<option value="active">active</option>
+			<option value="inactive">inactive</option>
+		</select>
+		<input type="button" Value="register" onClick=getData()>
+	</div>
+	<div class="login">
+		<a href="login.html"> <input type="button"
+			Value="already have an account?">
+		</a>
+	</div>
+</body>
+</html>

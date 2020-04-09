@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="style.css">
+<script>
+	xmlhttp = new XMLHttpRequest();
+	function sendXML(method, url) {
+		if(xmlhttp) {
+			xmlhttp.open(method, url, true);
+			xmlhttp.setRequestHeader('Content-type', 'application/json');
+			remove = {
+				username: document.getElementById("username").value,
+				tokenID: localStorage.getItem("tokenID")
+			};
+			
+			removeText = JSON.stringify(remove);
+			xmlhttp.onreadystatechange = function receiveResponse() {
+			if(this.readyState == 4 && this.status != 200) {
+				alert("Invalid username");
+				window.location.href = "options.html";
+			}
+			}
+			xmlhttp.send(removeText);
+			xmlhttp.onload = () => {
+				alert("Your account was removed");
+				window.location.href = "index.html";
+			}
+		}
+	}
+	
+	function getData() {
+		sendXML('DELETE', 'https://deft-scope-271519.appspot.com/rest/remove/v1');
+	}
+	
+</script>
+</head>
+<body>
+	<div class=remove>
+		<label for="username"><b>Username</b></label>
+		<input type="text" id="username" placeholder="Enter Username" name="username" required>
+		<input type="button" value="submit" onClick=getData()>
+	</div>
+</body>
+</html>
